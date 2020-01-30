@@ -18,6 +18,7 @@ class ViewController: UIViewController {
     var phoneNo:String = ""
     var userName:String = ""
     var password:String = ""
+    var count:Int = 0
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,11 +26,20 @@ class ViewController: UIViewController {
         view.setGradientColor(colorOne: .black, colorTwo: .white)
         loadData()
     }
-    @IBAction func loginBtn(_ sender: UIButton) {
-        userName = emailTextField.text!
-        password = passwordTextField.text!
-        
-        checkUser()
+    
+    @IBAction func btn(_ sender: UIButton) {
+        if sender.tag == 1{
+            //Login
+            userName = emailTextField.text!
+            password = passwordTextField.text!
+            count = 1
+            checkUser()
+        }
+        else if sender.tag == 2{
+            //Signup
+            count = 2
+            performSegue(withIdentifier: "signup", sender: self)
+        }
     }
     func loadData(){
         let request : NSFetchRequest<User> = User.fetchRequest()
@@ -62,16 +72,17 @@ class ViewController: UIViewController {
         }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! HomeViewController
-        vc.firstName = firstName
-        vc.lastName = lastName
-        vc.phoneNo = phoneNo
-        vc.email = userName
-        vc.password = password
-    }
-    
-    @IBAction func signupBtn(_ sender: UIButton) {
-        performSegue(withIdentifier: "signup", sender: self)
+        if count == 1 {
+            let vc = segue.destination as! HomeViewController
+            vc.firstName = firstName
+            vc.lastName = lastName
+            vc.phoneNo = phoneNo
+            vc.email = userName
+            vc.password = password
+        }
+        else{
+            let vc1 = segue.destination as! SignUpViewController
+        }
     }
 }
 

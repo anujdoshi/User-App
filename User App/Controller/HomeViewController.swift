@@ -72,6 +72,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDe
         present(alert,animated: true,completion: nil)
     }
     @IBAction func logoutBtn(_ sender: UIButton) {
+        exit(0)
     }
     func saveData(){
         do{
@@ -189,6 +190,7 @@ class HomeViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDe
                        if email == userCheck[i].email{
                             context.delete(userCheck[i])
                             successfulDelete()
+                            try context.save()
                        }else{
                         errorAlertDelete()
                     }
@@ -198,7 +200,6 @@ class HomeViewController: UIViewController,UIPickerViewDataSource,UIPickerViewDe
         }
     }
     func successfulDelete(){
-        loadData()
         let alert = UIAlertController(title: "Delete", message: "Successfully Deleted Account", preferredStyle: .alert)
         let action = UIAlertAction(title: "Ok", style: .default) { (UIAlertAction) in
             exit(0)
